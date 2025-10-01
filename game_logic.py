@@ -1,7 +1,7 @@
 import random
 from ascii_art import STAGES
 
-# List of secret words
+# List of secret words (with more words in the pot)
 WORDS = ["python", "git", "github", "snowman", "meltdown", "manifold", "secret",
          "random", "trial", "display", "progress", "game", "state", "welcome",
          "book", "bag", "house", "university", "institute", "fan", "mother"
@@ -70,28 +70,28 @@ def play_game():
         while mistakes < max_mistakes:
             display_game_state(mistakes, secret_word, guessed_letters)
 
-            # Get valid guess from user
+            #getting valid guess from user
             while True:
                 guess = input("Guess a letter: ").lower().strip()
-                if len(guess) == 1 and guess.isalpha(): #catches whether single-letter and alphabet
+                if len(guess) == 1 and guess.isalpha(): #catches single-letter and alphabet
                     if guess in guessed_letters:
                         print("You already guessed that letter! Try again.\n")
                     else:
                         break
                 else:
-                    print("Please enter a single english letter.\n")
+                    print("Please enter a single english letter 'between A to Z'.\n")
 
-            # Add guess to guessed letters
+            #adding guess to guessed letters
             guessed_letters.append(guess)
 
-            # Check if guess is correct
+            #checking if guess is correct
             if guess in secret_word:
                 print("Correct guess!\n")
             else:
                 mistakes += 1
                 print("Wrong guess! Be careful! The snowman is melting...\n")
 
-            # Check if player won
+            #checking if player won
             won = all(letter in guessed_letters for letter in secret_word)
             if won:
                 display_game_state(mistakes, secret_word, guessed_letters)
@@ -103,14 +103,15 @@ def play_game():
         print(f"Error during gameplay {e}")
         return False
 
-    # Player lost
+    #Player_lost
     display_game_state(mistakes, secret_word, guessed_letters)
     print("Game Over! The snowman melted completely.")
     print(f"The word was: {secret_word}")
     return False
 
+
 def ask_replay():
-    """Ask the user to replay the game."""
+    """asking whether the user wants to replay the game."""
     while True:
         try:
             response = input("Do you want to play again? (y/n): ").lower()
