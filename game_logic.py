@@ -9,25 +9,26 @@ WORDS = ["python", "git", "github", "snowman", "meltdown", "manifold", "secret",
 
 
 def get_random_word():
-    """Selects a random word from the list."""
+    """selecting a random word from the list."""
     try:
         if WORDS:
             return random.choice(WORDS)
         else:
             print("No words in the list")
-
+            return None
     except Exception as e:
         print(f"Error is {e}")
+        return None
 
 
 def display_game_state(mistakes, secret_word, guessed_letters):
-    """Display the current game state including snowman and word progress."""
+    """displaying the current game state including snowman and word progress."""
+    print("*" * 80)
     try:
         if STAGES:
             print(STAGES[mistakes])
         else:
             print(f"snowman stages is empty")
-
     except Exception as e:
         print(f"Error is {e}")
 
@@ -43,18 +44,25 @@ def display_game_state(mistakes, secret_word, guessed_letters):
         print("Guessed letters:", " ".join(sorted(guessed_letters)))
         print("Mistakes:", mistakes, "/", len(STAGES) - 1)
         print("\n")
-
     except Exception as e:
         print(f"Error is {e}")
 
 
 def play_game():
-    """Main game loop with enhanced guessing logic."""
-    secret_word = get_random_word()
+    """main game loop with enhanced guessing logic."""
+    try:
+        secret_word = get_random_word()
+        if not secret_word:
+            return False
+    except Exception as e:
+        print(f"Error is {e}")
+        return False
+
     guessed_letters = []
     mistakes = 0
     max_mistakes = len(STAGES) - 1
 
+    print("*" * 80)
     print("Welcome to Snowman Meltdown!")
     print("Save the snowman by guessing the word before it melts completely!\n")
 
@@ -65,7 +73,7 @@ def play_game():
             # Get valid guess from user
             while True:
                 guess = input("Guess a letter: ").lower().strip()
-                if len(guess) == 1 and guess.isalpha():
+                if len(guess) == 1 and guess.isalpha(): #catches whether single-letter and alphabet
                     if guess in guessed_letters:
                         print("You already guessed that letter! Try again.\n")
                     else:
@@ -92,10 +100,27 @@ def play_game():
                 return True
 
     except Exception as e:
-        print(f"Error is {e}")
+        print(f"Error during gameplay {e}")
+        return False
 
     # Player lost
     display_game_state(mistakes, secret_word, guessed_letters)
     print("Game Over! The snowman melted completely.")
     print(f"The word was: {secret_word}")
     return False
+
+def ask_replay():
+    """Ask the user to replay the game."""
+    while True:
+        try:
+            response = input("Do you want to play again? (y/n): ").lower()
+            if response in ['y', 'yes', 'yeah', 'yep']:
+                return True
+            elif response in ['n', 'no', 'nope', 'nah']:
+                return False
+            else:
+                print("Please enter a valid response (y/n).")
+        except Exception as e:
+            print(f"Error is {e}")
+
+
